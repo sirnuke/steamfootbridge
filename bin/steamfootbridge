@@ -1,6 +1,42 @@
 #!/usr/bin/env python2.7
 
+import argparse, os, sys
 import steamfootbridge
 
-print(steamfootbridge.__version__)
+def error(message):
+    print "{}: {}".format(steamfootbridge.__app_name__, message)
+    exit(1)
+
+def help():
+    print "TODO: Usage statement"
+    exit(0)
+
+def version():
+    print "{} {}".format(steamfootbridge.__app_name__, steamfootbridge.__version__)
+    exit(0)
+
+class CLI:
+    def create_parser(self, command):
+        return argparse.ArgumentParser(prog="{} {}".format(steamfootbridge.__app_name__, command))
+
+    def execute(self, args):
+        parser = self.create_parser("execute")
+        parser.add_argument("appid", type=int, help="the Steam application's AppID")
+        args = parser.parse_args(args)
+        steamfootbridge.execute.do(args.appid)
+
+if len(sys.argv) < 2:
+    error("Need a command")
+
+cmd = sys.argv[1].lower()
+cli = CLI()
+
+if cmd == "--help" or cmd == "-h" or cmd == "help":
+    help()
+elif cmd == "--version" or cmd == "-v" or cmd == "version":
+    version()
+elif cmd == "execute":
+    cli.execute(sys.argv[2:])
+else:
+    error("Unknown or unrecognized command: {}".format(cmd))
 
