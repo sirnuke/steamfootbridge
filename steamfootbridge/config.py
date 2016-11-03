@@ -5,4 +5,5 @@
 # NOTE: No explict \"s around the path.  They're necessary when running as an actual shell to keep
 #       the shell from parsing the slash and whatnot, but are actually stripped out when passed
 #       to Wine.
+# TODO: Can safely grep the user.reg for SteamPath/SteamExe keys
 __wine_steam_path__ = "C:\\\\Program Files (x86)\\\\Steam\\\\Steam.exe"
