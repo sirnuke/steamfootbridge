@@ -1,7 +1,7 @@
 # SteamFootBridge
 # Copyright (c) 2016 Bryan DeGrendel
 
-from . import config, execute
+from . import config, download, execute, setup
 
 import pkg_resources
 

@@ -16,14 +16,27 @@ def version():
     exit(0)
 
 class CLI:
-    def create_parser(self, command):
-        return argparse.ArgumentParser(prog="{} {}".format(steamfootbridge.__app_name__, command))
+    def create_parser(self, command, description):
+        return argparse.ArgumentParser(prog="{} {}".format(steamfootbridge.__app_name__, command),
+                description=description)
+
+    def download(self, args):
+        parser = self.create_parser("download", "Download an application inside Wine Steam")
+        parser.add_argument("appid", type=int, help="the Steam application's AppID")
+        args = parser.parse_args(args)
+        steamfootbridge.download.do(args.appid)
+
 
     def execute(self, args):
-        parser = self.create_parser("execute")
+        parser = self.create_parser("execute", "Execute an application inside Wine Steam")
         parser.add_argument("appid", type=int, help="the Steam application's AppID")
         args = parser.parse_args(args)
         steamfootbridge.execute.do(args.appid)
+
+    def setup(self, args):
+        parser = self.create_parser("setup", "Setup Wine Steam")
+        args = parser.parse_args(args)
+        steamfootbridge.setup.do()
 
 if len(sys.argv) < 2:
     error("Need a command")
@@ -35,8 +48,12 @@ if cmd == "--help" or cmd == "-h" or cmd == "help":
     help()
 elif cmd == "--version" or cmd == "-v" or cmd == "version":
     version()
+elif cmd == "download":
+    cli.download(sys.argv[2:])
 elif cmd == "execute":
     cli.execute(sys.argv[2:])
+elif cmd == "setup":
+    cli.setup(sys.argv[2:])
 else:
     error("Unknown or unrecognized command: {}".format(cmd))
 
