@@ -1,5 +1,8 @@
 # SteamFootBridge
 # Copyright (c) 2016 Bryan DeGrendel
 
+from . import config
+
 def do():
-  print "TODO: Setup Wine prefix"
+  with config.Configuration() as c:
+    print "{} is userid".format(c._userid)
