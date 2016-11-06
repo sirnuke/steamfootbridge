@@ -5,4 +5,4 @@ from . import config
 
 def do():
   with config.Configuration() as c:
-    print "{} is userid".format(c._userid)
+    print "{} is localconfigdir".format(c.get_wine_steam_userconfig_filename())

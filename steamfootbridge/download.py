@@ -14,5 +14,5 @@ def do(appid):
     #       - possibly with quotation marks.  If so, we probably don't need anything beyond this.
     # TODO: In the future, SteamFootBridge will cache the list of possible applications and their
     #       states.  Starting a download like this should trigger a refresh.
-    subprocess.Popen(["wine", c.wine_steam_executable(), "-silent",
+    subprocess.Popen(["wine", c.get_wine_steam_windows_executable(), "-silent",
       "steam://install/{}".format(appid)])

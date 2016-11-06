@@ -11,6 +11,7 @@ __wine_registry_dump_file__ = "steam-registry.txt"
 __wine_registry_steam_executable__ = "SteamExe"
 __wine_registry_steam_path__ = "SteamPath"
 __wine_steam_user_directories__ = "/userdata"
+__wine_steam_userconfig_file__ = "/config/localconfig.vdf"
 
 class Configuration:
   def __init__(self):
@@ -25,19 +26,24 @@ class Configuration:
   def __exit__(self, exception_type, exception_value, traceback):
     shutil.rmtree(self._temp_directory)
 
-  def wine_steam_executable(self):
-    return self._wine_steam_executable
+  def get_wine_steam_windows_executable(self):
+    return self._wine_steam_windows_executable
 
-  def wine_steam_path(self):
+  def get_wine_steam_windows_path(self):
+    return self._wine_steam_windows_path
+
+  def get_wine_steam_path(self):
     return self._wine_steam_path
 
   def get_current_user(self):
     return self._userid
 
+  def get_wine_steam_userconfig_filename(self):
+    return "{}{}/{}{}".format(self.get_wine_steam_path(), __wine_steam_user_directories__,
+        self._userid, __wine_steam_userconfig_file__)
+
   def _determine_current_user(self):
-    directory = string.strip(subprocess.check_output(["winepath",
-      self._wine_steam_path + __wine_steam_user_directories__]))
-    directories = os.listdir(directory)
+    directories = os.listdir(self._wine_steam_path + __wine_steam_user_directories__)
     if len(directories) == 0:
       raise StandardException("No users found!  Have you logged into Wine Steam?")
     elif len(directories) > 1:
@@ -56,12 +62,20 @@ class Configuration:
     subprocess.call(["regedit", "-E",
       "{}/{}".format(self._temp_directory, __wine_registry_dump_file__),
       __wine_registry_steam_key__])
+    self._wine_steam_windows_path = None
+    self._wine_steam_windows_executable = None
     with open("{}/{}".format(self._temp_directory, __wine_registry_dump_file__)) as f:
       for line in f:
         result = re.search("\"SteamExe\"=\"(.*)\"", line)
         if result:
-          self._wine_steam_executable = result.group(1)
+          self._wine_steam_windows_executable = result.group(1)
 
         result = re.search("\"SteamPath\"=\"(.*)\"", line)
         if result:
-          self._wine_steam_path = result.group(1)
+          self._wine_steam_windows_path = result.group(1)
+    if self._wine_steam_windows_path == None:
+      raise StandardException("Unable to determine the SteamPath")
+    if self._wine_steam_windows_executable == None:
+      raise StandardException("Unable to determine the SteamExe")
+    self._wine_steam_path = string.strip(subprocess.check_output(["winepath",
+      self._wine_steam_windows_path]))
