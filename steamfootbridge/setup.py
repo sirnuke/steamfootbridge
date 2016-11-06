@@ -3,6 +3,11 @@
 
 from . import config
 
+import steam
+
 def do():
   with config.Configuration() as c:
-    print "{} is localconfigdir".format(c.get_wine_steam_userconfig_filename())
+    path = c.get_wine_steam_userconfig_filename()
+    print "Updating {}".format(path)
+    with open(path) as f:
+      userconfig = steam.vdf.load(f)
