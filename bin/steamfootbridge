@@ -1,23 +1,23 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import argparse, os, sys
 import steamfootbridge
 
 def error(message):
-    print "{}: {}".format(steamfootbridge.__app_name__, message)
+    print("{}: {}".format(steamfootbridge.__app_name__, message))
     exit(1)
 
 def help():
-    print "Command: \t \t \t  Description:"
-    print "\t-v, --version or version : Prints the version of steamfootbridge to the screen"
-    print "\t-h, --help or help       : Prints this screen"
-    print "\tdownload {steamid}       : Downloads the specified app"
-    print "\texecute {steamid}        : Execute the app"
-    print "\tsetup {steamid}          : Set up a new Wineprefix for the specified app"
+    print("Command: \t \t \t  Description:")
+    print("\t-v, --version or version : Prints the version of steamfootbridge to the screen")
+    print("\t-h, --help or help       : Prints this screen")
+    print("\tdownload {steamid}       : Downloads the specified app")
+    print("\texecute {steamid}        : Execute the app")
+    print("\tsetup {steamid}          : Set up a new Wineprefix for the specified app")
     exit(0)
 
 def version():
-    print "{} {}".format(steamfootbridge.__app_name__, steamfootbridge.__version__)
+    print("{} {}".format(steamfootbridge.__app_name__, steamfootbridge.__version__))
     exit(0)
 
 class CLI:

@@ -6,7 +6,7 @@ import subprocess
 from . import config
 
 def do(appid):
-  print "Downloading {}".format(appid)
+  print("Downloading {}".format(appid))
   with config.Configuration() as c:
     # NOTE: It appears that generated shortcuts are little more than
     #       C:\\Windows\command\start.exe steam://rungameid/<appid>
