@@ -6,11 +6,11 @@ from . import config
 import steam
 
 # TODO: Does capitalization mater?
-__root_userconfig_key__     = u'UserLocalConfigStore'
-__friends_userconfig_key__  = u'friends'
-__autologin_friends_key__   = u'AutoSignIntoFriends'
-__system_userconfig_key__   = u'system'
-__enable_game_overlay_key__ = u'EnableGameOverlay'
+__root_userconfig_key__     = 'UserLocalConfigStore'
+__friends_userconfig_key__  = 'friends'
+__autologin_friends_key__   = 'AutoSignIntoFriends'
+__system_userconfig_key__   = 'system'
+__enable_game_overlay_key__ = 'EnableGameOverlay'
 
 # TODO: Option to disable setting friends autologin
 # TODO: Option to disable setting overlay disabled
@@ -18,7 +18,7 @@ __enable_game_overlay_key__ = u'EnableGameOverlay'
 def do():
   with config.Configuration() as c:
     path = c.get_wine_steam_userconfig_filename()
-    print "Reading {}".format(path)
+    print("Reading {}".format(path))
 
     with open(path, 'r') as f:
       userconfig = steam.vdf.load(f)
@@ -27,7 +27,7 @@ def do():
     _set_disable_friends_auto_login(userconfig)
     _set_disable_overlay(userconfig)
 
-    print "Writing updated {}".format(path)
+    print("Writing updated {}".format(path))
     with open(path, 'w') as f:
       steam.vdf.dump(userconfig, f)
 
@@ -43,7 +43,7 @@ def _base_setup_userconfig(userconfig):
     root[__system_userconfig_key__] = {}
 
 def _set_disable_friends_auto_login(userconfig):
-  userconfig[__root_userconfig_key__][__friends_userconfig_key__][__autologin_friends_key__] = u'0'
+  userconfig[__root_userconfig_key__][__friends_userconfig_key__][__autologin_friends_key__] = '0'
 
 def _set_disable_overlay(userconfig):
-  userconfig[__root_userconfig_key__][__system_userconfig_key__][__enable_game_overlay_key__] = u'0'
+  userconfig[__root_userconfig_key__][__system_userconfig_key__][__enable_game_overlay_key__] = '0'
